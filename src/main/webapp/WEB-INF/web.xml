@@ -19,4 +19,5 @@
   <servlet-name>DataServlet</servlet-name>
   <url-pattern>/listUser</url-pattern>
   </servlet-mapping>
+  
 </web-app>
