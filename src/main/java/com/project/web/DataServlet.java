@@ -9,8 +9,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 import com.project.dao.UserDao;
 import com.project.model.User;
@@ -20,7 +23,8 @@ import com.project.model.User;
 public class DataServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-private static final Logger logger = Logger.getLogger(DataServlet.class.getName()); 
+private static final Logger logger = LogManager.getLogger();
+
 	private UserDao userDao;
 	
 	public void init() {
@@ -70,7 +74,7 @@ private static final Logger logger = Logger.getLogger(DataServlet.class.getName(
 	}
 	
 	private void listUser(HttpServletRequest req , HttpServletResponse res) throws SQLException, IOException, ServletException{
-		logger.log(Level.INFO, "list user method called");
+		logger.info("hello you used log4j for calling the list user servlet ");
 		List<User> listUser = userDao.selectAllUsers();
 		req.setAttribute("listUser", listUser);
 		RequestDispatcher dispatcher = req.getRequestDispatcher(page);
@@ -78,7 +82,7 @@ private static final Logger logger = Logger.getLogger(DataServlet.class.getName(
 	}
 	
 	private void insertUser(HttpServletRequest req, HttpServletResponse res) throws SQLException ,IOException , ServletException {
-		logger.log(Level.INFO, "Insertuser method called");
+		logger.info("insert user method called ");
 		String name = req.getParameter("name");
 		String email = req.getParameter("email");
 		String country = req.getParameter("country");
@@ -89,7 +93,7 @@ private static final Logger logger = Logger.getLogger(DataServlet.class.getName(
 	}
 	
 	private void deleteUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-		logger.log(Level.INFO, "Dlete user method called");
+		logger.info("Delete user serlvet called " );
 		int id = Integer.parseInt(request.getParameter("id"));
 		userDao.deleteUser(id);
 		response.sendRedirect("list");
@@ -97,7 +101,7 @@ private static final Logger logger = Logger.getLogger(DataServlet.class.getName(
 	
 	
 	private void updateUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
-		logger.log(Level.INFO, "Update user method called");
+	
 		int id = Integer.parseInt(request.getParameter("id"));
 		 User alreadyUser = userDao.selectUser(id);
 		 request.setAttribute("user", alreadyUser);
@@ -111,6 +115,7 @@ private static final Logger logger = Logger.getLogger(DataServlet.class.getName(
 		
 		User updatedUser = new User(id,name,email,country,number);
 		userDao.updateUser(updatedUser);
+		logger.info("Update user servlet called");
 		response.sendRedirect("list");
 
 	}
