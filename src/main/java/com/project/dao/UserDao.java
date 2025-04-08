@@ -1,5 +1,6 @@
 package com.project.dao;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -27,6 +28,8 @@ public class UserDao {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/my_new_db?useSSL=false","root","root");
 			System.out.println("Connect to db");
+			System.out.println("Current Working Directory: " + new File(".").getAbsolutePath());
+			System.out.println("Here is the login time " + DriverManager.getLoginTimeout());
 		} catch(SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
