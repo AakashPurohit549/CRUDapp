@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<%@ page session="false"%>
 <%@page import="java.util.*"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
@@ -44,22 +44,12 @@
 
 		<div class="container">
 
-
 			<h3 class="text-center">List of Users</h3>
-
-			<!--   <div class="container text-left">
-                    <a href="<%=request.getContextPath()%>/new" class="btn btn-success">Add New User </a>
-              </div> -->
-
-
 			<div>
-
-				<button type="button" class="btn btn-primary" data-toggle="modal"
+				<button type="button" class="btn btn-primary m-2 p-1" data-toggle="modal"
 					data-target="#exampleModal" data-whatever="@anything">Add
 					New User</button>
-
 			</div>
-
 
 			<!-- Modal -->
 			<div class="modal fade" id="exampleModal">
@@ -115,8 +105,7 @@
 									<button type="button" class="btn btn-secondary"
 										data-dismiss="modal">Close</button>
 									<button type="submit" class="btn btn-primary"
-										onClick="return validate()">
-										Add</button>
+										onClick="return validate()">Add</button>
 
 								</div>
 						</div>
@@ -174,8 +163,7 @@
 									<button type="button" class="btn btn-secondary"
 										data-dismiss="modal">Close</button>
 									<button type="submit" class="btn btn-primary" name="id"
-										id="submit-btn">
-										Save Changes</button>
+										id="submit-btn">Save Changes</button>
 
 								</div>
 						</div>
@@ -183,113 +171,6 @@
 					</form>
 				</div>
 			</div>
-
-
-			<script>
-				document
-						.getElementById('UpdateModal')
-						.addEventListener(
-								'show.bs.modal',
-								function(event) {
-									var button = event.relatedTarget;
-
-									var userId = button.getAttribute('data-id');
-									var userName = button
-											.getAttribute('data-name');
-									var userEmail = button
-											.getAttribute('data-email');
-									var userCountry = button
-											.getAttribute('data-country');
-									var userNumber = button
-											.getAttribute('data-number');
-
-									console.log(userId);
-									console.log(userName);
-									console.log(userEmail);
-									console.log(userCountry);
-									console.log(userNumber);
-
-									document.getElementById('id').value = userId;
-									document.getElementById('n').value = userName;
-									document.getElementById('email').value = userEmail;
-									document.getElementById('country').value = userCountry;
-									document.getElementById('m').value = userNumber;
-
-								});
-
-				document
-						.getElementById('updateform')
-						.addEventListener(
-								'submit',
-								function(event) {
-									event.preventDefault();
-
-									var name = document.getElementById('n').value;
-									var num = document.getElementById('m').value;
-									console.log(name);
-									console.log(num);
-
-									let isValid = true;
-									var nameRegx = /^[A-Za-z\s]+$/;
-									if (!nameRegx.test(name)) {
-										alert("No digits allowed, please enter the name");
-										isValid = false;
-									}
-
-									var mobilePattern = /^\d{10}$/;
-									if (!mobilePattern.test(num)) {
-										alert("Please enter a valid 10-digit mobile number.");
-										isValid = false;
-									}
-
-									if (isValid) {
-										document.getElementById('updateform')
-												.submit();
-									}
-
-								});
-
-				function validate() {
-					var num = document.getElementById('number').value.trim();
-					console.log(num);
-
-					let isValid = true;
-					var mobilePattern = /^\d{10}$/;
-					if (!mobilePattern.test(num)) {
-						alert("Please enter a valid 10-digit mobile number.");
-						isValid = false;
-					}
-
-					var name = document.getElementById('name').value.trim();
-					console.log(name);
-
-					var nameRegx = /^[A-Za-z\s]+$/;
-					if (!nameRegx.test(name)) {
-						alert("No digits allowed, please enter the name");
-						isValid = false;
-					}
-
-					return isValid;
-				}
-
-				//for now data showing in the console , this is part of the extra task
-				/* async function Restcountries(){
-				   const url = 'https://restcountries.com/v3.1/all';
-				   const options = {
-				   	method: 'GET',
-				   };
-
-				   try {
-				   	const response = await fetch(url, options);
-				   	const result = await response.text();
-				   	console.log(result);
-				   } catch (error) {
-				   	console.error(error);
-				   }
-				 }
-				 
-				 Restcountries();  */
-			</script>
 
 			<br>
 
@@ -317,8 +198,8 @@
 									data-toggle="modal" data-target="#UpdateModal"
 									data-id="${user.id}" data-name="${user.name}"
 									data-email="${user.email}" data-country="${user.country}"
-									data-number="${user.number}">
-									Edit</button> </a> &nbsp;&nbsp;&nbsp;&nbsp;<a
+									data-number="${user.number}">Edit</button>
+								&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-danger"
 								href="delete?id=<c:out value='${user.id}' />">Delete</a></td>
 						</tr>
 					</c:forEach>
@@ -326,9 +207,6 @@
 			</table>
 		</div>
 	</div>
-
-	<!--  <td><a href data-toggle="modal" data-target="#UpdateModal" data-id="${user.id }"> -->
-
 </body>
 
 
