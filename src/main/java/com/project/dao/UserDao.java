@@ -1,6 +1,5 @@
 package com.project.dao;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,16 +8,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.project.model.User;
 
 public class UserDao {
 
 	public UserDao() {}
 	
-	//private static final String SELECT_ALL_USERS = "SELECT * FROM users";
-    private static final String INSERT_USERS_SQL = "INSERT INTO users" + "  (name, email, country, number) VALUES " +
+	private static final Logger logger = LogManager.getLogger();
+	
+    private static final String INSERT_USERS_SQL = "insert into users" + "  (name, email, country, number) VALUES " +
             " (?, ?, ?, ?);";
-   // private static final String UPDATE_USERS_SQL = "update users set name = ?,email= ?, country =? where id = ?;";
+  
 
 	
 	protected Connection getConnection(){
@@ -27,20 +30,17 @@ public class UserDao {
 		try{
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/my_new_db?useSSL=false","root","root");
-			System.out.println("Connect to db");
-			System.out.println("Current Working Directory: " + new File(".").getAbsolutePath());
-			System.out.println("Here is the login time " + DriverManager.getLoginTimeout());
 		} catch(SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			logger.error("exception occured in database connection",e);
 		}
 		return connection;
 	}
 	
 	
-	//List of all users 
-	public List <User> selectAllUsers(){
+	//List of all users  selectAllUsers == getAllUsers
+	public List <User> getAllUsers(){
 		
 		List<User> users = new ArrayList<>();
 		
@@ -48,28 +48,29 @@ public class UserDao {
 				PreparedStatement preparedStatement = connection.prepareStatement("Select * from users")){
 			System.out.println(preparedStatement);
 			
-			ResultSet rs = preparedStatement.executeQuery();
+			ResultSet resultSet = preparedStatement.executeQuery();
 			
-			while(rs.next()) {
-				int id = rs.getInt("id");
-				String name = rs.getString("name");
-				String email = rs.getString("email");
-				String country = rs.getString("Country");
-				String number = rs.getString("number");
+			while(resultSet.next()) {
+				int id = resultSet.getInt("id");
+				String name = resultSet.getString("name");
+				String email = resultSet.getString("email");
+				String country = resultSet.getString("country");
+				String number = resultSet.getString("number");
 				users.add(new User(id,name,email,country,number));
 				
 			}
 				
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.error("exception in the userDao getAllUser methods ");
 			
 		}
 		return users;
 			
 	}
 	
-	//selecting user by id
-	public User selectUser(int id) {
+	//get user by id         
+	public User getUser(int id) {
 		User user = null;
 		
 		try(Connection connection = getConnection(); 
@@ -79,26 +80,27 @@ public class UserDao {
 			System.out.println(preparedStatement);
 			
 			
-			ResultSet rs = preparedStatement.executeQuery();
+			ResultSet resultSet = preparedStatement.executeQuery();
 			
-			while(rs.next()) {
-				String name = rs.getString("name");
-				String email = rs.getString("email");
-				String country = rs.getString("Country");
-				String number = rs.getString("number");
+			while(resultSet.next()) {
+				String name = resultSet.getString("name");
+				String email = resultSet.getString("email");
+				String country = resultSet.getString("country");
+				String number = resultSet.getString("number");
 				user = new User(id,name,email,country,number);
 
 			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.error("exception occured in the getUser method of userDao");
 		}
 		
 		return user;
 	}
 	
-	//to insert a new user
-	public void insertUser(User user) {
+	//to create a new user
+	public void createUser(User user) {
 		System.out.println(INSERT_USERS_SQL);
 		
 		try(Connection connection = getConnection(); 
@@ -114,6 +116,7 @@ public class UserDao {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.error("Exception occured in the createUser method");
 			
 		}
 	}
@@ -141,18 +144,11 @@ public class UserDao {
             statement.setString(2, user.getEmail());
             statement.setString(3, user.getCountry());
 			statement.setString(4, user.getNumber());
-            statement.setInt(5, user.getId());
+            statement.setInt(6, user.getId());
 
             rowUpdated = statement.executeUpdate() > 0;
         }
         return rowUpdated;
     }
-	
-	
-	
-	
-	
-	
-	
 	
 }
