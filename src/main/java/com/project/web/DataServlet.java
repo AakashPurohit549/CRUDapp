@@ -49,17 +49,12 @@ private static final Logger logger = LogManager.getLogger();
 				try {
 					switch(actions) {
 					
-					case "/new":
-						showNewForm(request,response);
-						break;
 					case "/insert":
-						insertUser(request,response);
+						createUser(request,response);
 						break;
 					case "/delete":
 						deleteUser(request,response);
 						break;
-					case "/edit":
-						showEditForm(request, response);
 	                case "/update":
 	                    updateUser(request, response);
 	                    break;
@@ -69,26 +64,27 @@ private static final Logger logger = LogManager.getLogger();
 					}
 						
 				} catch (SQLException ex) {
+					logger.error("exception occured in the servlet calling",ex);
 		            throw new ServletException(ex);
 				}
 	}
 	
 	private void listUser(HttpServletRequest req , HttpServletResponse res) throws SQLException, IOException, ServletException{
 		logger.info("hello you used log4j for calling the list user servlet ");
-		List<User> listUser = userDao.selectAllUsers();
+		List<User> listUser = userDao.getAllUsers();
 		req.setAttribute("listUser", listUser);
 		RequestDispatcher dispatcher = req.getRequestDispatcher(page);
 		dispatcher.forward(req, res);
 	}
 	
-	private void insertUser(HttpServletRequest req, HttpServletResponse res) throws SQLException ,IOException , ServletException {
-		logger.info("insert user method called ");
+	private void createUser(HttpServletRequest req, HttpServletResponse res) throws SQLException ,IOException , ServletException {
+		logger.info("create user method called ");
 		String name = req.getParameter("name");
 		String email = req.getParameter("email");
 		String country = req.getParameter("country");
 		String number = req.getParameter("number");
 		User newUser = new User(name,email,country,number);
-		userDao.insertUser(newUser);
+		userDao.createUser(newUser);
 		res.sendRedirect("list");
 	}
 	
@@ -103,7 +99,7 @@ private static final Logger logger = LogManager.getLogger();
 	private void updateUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ServletException{
 	
 		int id = Integer.parseInt(request.getParameter("id"));
-		 User alreadyUser = userDao.selectUser(id);
+		 User alreadyUser = userDao.getUser(id);
 		 request.setAttribute("user", alreadyUser);
 
 		 
@@ -119,23 +115,4 @@ private static final Logger logger = LogManager.getLogger();
 		response.sendRedirect("list");
 
 	}
-	//not used as i am using modal-pop
-	private void showNewForm(HttpServletRequest request, HttpServletResponse response) throws  ServletException, IOException{
-		RequestDispatcher dispatcher = request.getRequestDispatcher("user-form.jsp");
-		dispatcher.forward(request, response);
-		
-	}
-	
-	//not used as i am using modal-pop
-	 private void showEditForm(HttpServletRequest request, HttpServletResponse response)
-			    throws SQLException, ServletException, IOException {
-			        int id = Integer.parseInt(request.getParameter("id"));
-			        User existingUser = userDao.selectUser(id);
-			        RequestDispatcher dispatcher = request.getRequestDispatcher("list");
-			        request.setAttribute("user", existingUser);
-			        dispatcher.forward(request, response);
-
-			    }
-	
-
 }
