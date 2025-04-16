@@ -18,7 +18,6 @@
                     <div>
                         <a class="navbar-brand"> User Management App </a>
                     </div>
-
                     <ul class="navbar-nav">
                         <li><a href="<%=request.getContextPath()%>/list" class="nav-link">Users</a></li>
                     </ul>
