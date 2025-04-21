@@ -20,10 +20,9 @@
 	integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/"
 	crossorigin="anonymous">
           </script>
-<script type="text/javascript" src="index.js"></script>
-
 <meta charset="UTF-8">
 <title>User CRUD</title>
+<script type="text/javascript" src="newjs.js"></script>
 </head>
 <body>
 
@@ -208,6 +207,7 @@
 		</div>
 	</div>
 </body>
+<script type="text/javascript"><%@include file="newjs.js" %></script>
 
 
 </html>
