@@ -144,7 +144,7 @@ public class UserDao {
             statement.setString(2, user.getEmail());
             statement.setString(3, user.getCountry());
 			statement.setString(4, user.getNumber());
-            statement.setInt(6, user.getId());
+            statement.setInt(5, user.getId());
 
             rowUpdated = statement.executeUpdate() > 0;
         }
