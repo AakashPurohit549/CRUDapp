@@ -22,7 +22,6 @@
           </script>
 <meta charset="UTF-8">
 <title>User CRUD</title>
-<script type="text/javascript" src="newjs.js"></script>
 </head>
 <body>
 
@@ -91,12 +90,6 @@
 												<c:out value="${user.number}"/> name="number"
 												required="required" />
 										</div>
-
-
-										<!--   <textarea class="form-control"
-                                            id="message-text">
-                                    </textarea> -->
-
 									</div>
 
 								</div>
